@@ -1,6 +1,5 @@
-# Falcor
-
 ## Your *luck dragon* for OS signals
+
 Our friend Falcor has journeyed to the farthest reaches of Fantasia, and like any luck dragon, knows how to listen for signals from beyond our world. This makes Falcor the perfect helper for binding functions to any `os.Signal` you'd like to handle. 
 
 Once flying, your luck dragon will listen for signals from beyond the *Nothing*, and will execute the right functions at just the right time.
@@ -8,6 +7,7 @@ Once flying, your luck dragon will listen for signals from beyond the *Nothing*,
 <p align="center"><img width=70% src="./luckdragon.gif"><br /><em>"Having a luck dragon with you is the only way to go on a quest!"</em> – Falcor</p>
 
 ### Installation
+
 ```bash
 $ go get github.com/eyelight/falcor
 ```
@@ -21,6 +21,7 @@ import (
 ### Usage
 
 **Configure Falcor**
+
 How talkative do you want your luck dragon?
 ```go
 config := falcor.Config{
@@ -29,6 +30,7 @@ config := falcor.Config{
 ```
 
 **Summon Falcor With Luck**
+
 To configure Falcor initially, call `WithLuck()` and pass your config:
 ```go
 func init() {
@@ -46,6 +48,7 @@ func main() {
 ```
 
 **Gather your riders**
+
 It's time to add handlers to any desired OS signal you'd like to handle. Let's handle an interrupt signal that will exit the program.
 ```go
 bastian.Mount(syscall.SIGINT, "onInterrupt", func() {
@@ -57,6 +60,7 @@ bastian.Mount(syscall.SIGINT, "onInterrupt", func() {
 The signal `syscall.SIGINT` is now a "Rider" on our luck dragon. But falcor is not listening for signals just yet. For that, you need falcor to `Fly()`.
 
 **Fly Your Luck Dragon**
+
 Falcor listens for signals when he is flying:
 ```go
 bastian.Fly()
@@ -65,9 +69,11 @@ bastian.Fly()
 Now, issuing an interrupt signal via Ctrl-X will cause falcor to execute the function we added using `Mount()`. 
 
 **Multiple Handlers**
-What if we'd like to add more functions to the same OS signal? Just call `Mount()` again, and again.
+
+What if we'd like to add more functions to the same OS signal? Just call `Mount()` again, and additional functions will be bound to the rider.
 
 **Execution Order**
+
 Each of Falcor's Riders – each `os.Signal` passed to `Mount()` – has its own configurable execution order, with three strategies: `Concurrent`, `FIFO`, and `LIFO`. 
 
 By default, Rider functions will be called concurrently with a goroutine at the time a signal is received. To execute sequentially, call the `Execution(mode)` meethod on a Rider, who are identified by signal.
@@ -86,14 +92,7 @@ To go back to concurrent execution, pass `falcor.Concurrent` (or simply don't jo
 bastian.Rider(syscall.SIGINT).Execution(falcor.Concurrent) // default
 ```
 
-**Dismounting**
-To remove a function from a Rider, simply call `Dismount` with the appropriate signal and the function's label initially passed to `Mount`.
-
-```go
-bastian.Dismount(syscall.SIGINT, "onInterrupt")
-```
-
-Any time the number of functions attached to a signal reaches zero, its listener is stopped, goroutines exited, and the rider is removed from falcor. Yes, this can be done while flying – with any luck, the unfortunate rider falling from the flying luck dragon won't get eaten by G'mork, servant of the power behind the mysterious destroyer of memories called the *Nothing*, who seems to be systematically collecting all the garbage around Fantasia and erasing it.
+**Querying Riders**
 
 If you need to see the names of all the functions in a Rider, you can call `Sequence()` which will return a string containing all the Rider's functions, listed in order they were added to the function slice, separated by a character indicating execution order: ∞ for concurrent, → for FIFO, or ← for LIFO.
 
@@ -109,7 +108,19 @@ interrupt sequence: EXIT ← DUMPFILE ← BROKERHANGUP ← DBHANGUP
 
 Above, the four functions are executing in LIFO mode, where EXIT is called last. They are nevertheless listed in order they were received via a call to `Mount()`.
 
+**Dismounting**
+
+To remove a function from a Rider, simply call `Dismount` with the appropriate signal and the function's label initially passed to `Mount`.
+
+```go
+bastian.Dismount(syscall.SIGINT, "onInterrupt")
+```
+
+Any time the number of functions attached to a signal reaches zero, its listener is stopped, goroutines exited, and the rider is removed from falcor. Yes, this can be done while flying – with any luck, the unfortunate rider falling from the flying luck dragon won't get eaten by G'mork, servant of the power behind the mysterious destroyer of memories called the *Nothing*, who seems to be systematically collecting all the garbage around Fantasia and erasing it.
+
+
 **Landing Falcor**
+
 To manually stop all signal listeners, you can easily cause Falcor to `Land()`:
 ```go
 bastian.Land()
