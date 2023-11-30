@@ -76,7 +76,7 @@ What if we'd like to add more functions to the same OS signal? Just call `Mount(
 
 Each of Falcor's Riders – each `os.Signal` passed to `Mount()` – has its own configurable execution order, with three strategies: `Concurrent`, `FIFO`, and `LIFO`. 
 
-By default, Rider functions will be called concurrently with a goroutine at the time a signal is received. To execute sequentially, call the `Execution(mode)` meethod on a Rider, who are identified by signal.
+By default, Rider functions will be called concurrently with a goroutine at the time a signal is received. To execute sequentially, call the `Execution(mode)` meethod on a mounted Rider, identified by their signal.
 
 ```go
 bastian.Rider(syscall.SIGINT).Execution(falcor.FIFO) // Mount order 
@@ -93,6 +93,12 @@ bastian.Rider(syscall.SIGINT).Execution(falcor.Concurrent) // default
 ```
 
 **Querying Riders**
+
+If you need to know how many riders are mounted, just ask your luck dragon with `Riders()`:
+
+```go
+fmr.Printf("falcor has %v riders", bastian.Riders())
+```
 
 If you need to see the names of all the functions in a Rider, you can call `Sequence()` which will return a string containing all the Rider's functions, listed in order they were added to the function slice, separated by a character indicating execution order: ∞ for concurrent, → for FIFO, or ← for LIFO.
 
