@@ -3,9 +3,9 @@
 ## Your *luck dragon* for OS signals
 Our friend Falcor has journeyed to the farthest reaches of Fantasia, and like any luck dragon, knows how to listen for signals from beyond our world. This makes Falcor the perfect helper for binding functions to any `os.Signal` you'd like to handle. 
 
-Once flying, your luck dragon will listen for signals from beyond the *Nothing*, and will execute the right functions at just the right time. **Having a luck dragon with you is the only way to go on a quest.**
-<center><iframe src="https://giphy.com/embed/mx9fVEF08tyne" width="480" height="333" frameBorder="0"></iframe></center>
+Once flying, your luck dragon will listen for signals from beyond the *Nothing*, and will execute the right functions at just the right time.
 
+<p align="center"><img width=70% src="./luckdragon.gif"><br /><em>"Having a luck dragon with you is the only way to go on a quest!"</em> – Falcor</p>
 
 ### Installation
 ```bash
